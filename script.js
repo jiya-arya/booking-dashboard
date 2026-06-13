@@ -81,9 +81,38 @@ function renderBookings() {
         <p>${booking.status}</p>
         <div class="card-actions">
             <button>Edit</button>
-            <button>Delete</button>
+           <button class="delete-btn" data-id="${booking.id}"> Delete </button>
         </div>
     </div>`;
     bookingList.innerHTML += bookingCard;
+  });
+
+  //   call deletebooking();
+  deleteBooking();
+}
+
+// yha hum event delegation ka use karenge taki hum delete button ke click event ko handle kar sake kyunki delete button dynamically generate ho raha hai. delegation mean ki hum parent element (bookingList) par event listener lagayenge aur jab click event trigger hoga to hum check karenge ki kya click hua element delete button hai ya nahi. agar delete button hai to hum uski id ko get karenge aur deleteBooking function ko call karenge.
+
+function deleteBooking(id) {
+  console.log(id);
+//   filter method ka use karke hum bookings array me se us booking ko remove karenge jiska id match karta hai delete button ke data-id attribute se. filter method ek naya array return karta hai jisme wo sare elements hote hai jo condition ko satisfy karte hai. yaha hum condition laga rahe hai ki booking.id !== id, iska matlab hai ki hum us booking ko rakhenge jiska id delete button ke id se match nahi karta.
+  bookings = bookings.filter((booking) => booking.id !== id);
+
+//   render booking isliye call kar rahe hai taki page update ho jaye aur delete hone ke baad ki bookings dikhai de.
+  renderBookings();
+
+  const deleteButtons = document.querySelectorAll(".delete-btn");
+
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      console.log("Delete clicked");
+
+      //   button data.id kya kr rha hai , yeh us button ke data-id attribute ki value ko get kr rha hai jo ki booking id hai. isse hume pata chalega ki kaunse booking ko delete karna hai.
+
+      const bookingId = Number(button.dataset.id);
+
+      console.log(bookingId);
+      deleteBooking(bookingId);
+    });
   });
 }
