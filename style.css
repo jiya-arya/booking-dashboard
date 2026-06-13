@@ -94,9 +94,30 @@ header {
   padding: var(--space-lg) 0;
 }
 
+.stats-grid {
+  display: grid;
+  gap: var(--space-md);
+}
+#booking-form {
+  display: grid;
+  gap: var(--space-sm);
+}
+#search-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+#booking-list {
+  display: grid;
+  gap: var(--space-md);
+}
+section h2 {
+  margin-bottom: var(--space-md);
+}
+#booking-form label {
+  margin-bottom: var(--space-xs);
+}
 /* Components */
 
 /* Responsive */
 
-
-/* #F8FAFC */
