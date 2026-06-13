@@ -1,11 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Local Service Booking Dashboard</title>
+  </head>
 
-</body>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav>
+        <h1>Local Service Booking Dashboard</h1>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Dashboard Statistics -->
+      <section id="stats-section" aria-labelledby="stats-heading">
+        <h2 id="stats-heading">Dashboard Overview</h2>
+
+        <div class="stat-card">
+          <h3>Total Bookings</h3>
+          <p id="total-bookings">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Upcoming</h3>
+          <p id="upcoming-bookings">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Completed</h3>
+          <p id="completed-bookings">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Cancelled</h3>
+          <p id="cancelled-bookings">0</p>
+        </div>
+      </section>
+
+      <!-- Add Booking Form -->
+      <section id="booking-form-section">
+        <h2>Add Booking</h2>
+
+        <form id="booking-form">
+          <label for="name">Customer Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Enter customer name"
+            required
+          />
+
+          <label for="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Enter phone number"
+            required
+          />
+
+          <label for="service">Service Type</label>
+          <input
+            type="text"
+            id="service"
+            name="service"
+            placeholder="Enter service type"
+            required
+          />
+
+          <label for="date">Booking Date</label>
+          <input type="date" id="date" name="date" required />
+
+          <label for="time">Booking Time</label>
+          <input type="time" id="time" name="time" required />
+
+          <button type="submit">Add Booking</button>
+        </form>
+      </section>
+
+      <!-- Search Section -->
+      <section id="search-section">
+        <h2>Search Booking</h2>
+
+        <label for="search">Search Customer</label>
+
+        <input
+          type="text"
+          id="search"
+          placeholder="Search by customer name..."
+        />
+      </section>
+
+      <!-- Booking List -->
+      <section id="booking-list-section">
+        <h2>Bookings</h2>
+
+        <div id="booking-list">
+          <!--
+  Booking Card Structure
+
+  Name
+
+  Phone
+
+  Service
+
+  Date
+
+  Time
+
+  Status
+
+  Edit
+
+  Delete
+  -->
+        </div>
+      </section>
+    </main>
+  </body>
 </html>
