@@ -48,38 +48,48 @@
         <h2>Add Booking</h2>
 
         <form id="booking-form">
-          <label for="name">Customer Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Enter customer name"
-            required
-          />
+          <div class="form-group">
+            <label for="name">Customer Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter customer name"
+              required
+            />
+          </div>
 
-          <label for="phone">Phone Number</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            placeholder="Enter phone number"
-            required
-          />
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="Enter phone number"
+              required
+            />
+          </div>
 
-          <label for="service">Service Type</label>
-          <input
-            type="text"
-            id="service"
-            name="service"
-            placeholder="Enter service type"
-            required
-          />
+          <div class="form-group">
+            <label for="service">Service Type</label>
+            <input
+              type="text"
+              id="service"
+              name="service"
+              placeholder="Enter service type"
+              required
+            />
+          </div>
 
-          <label for="date">Booking Date</label>
-          <input type="date" id="date" name="date" required />
+          <div class="form-group">
+            <label for="date">Booking Date</label>
+            <input type="date" id="date" name="date" required />
+          </div>
 
-          <label for="time">Booking Time</label>
-          <input type="time" id="time" name="time" required />
+          <div class="form-group">
+            <label for="time">Booking Time</label>
+            <input type="time" id="time" name="time" required />
+          </div>
 
           <button type="submit">Add Booking</button>
         </form>
@@ -103,25 +113,19 @@
         <h2>Bookings</h2>
 
         <div id="booking-list">
-          <!--
-  Booking Card Structure
-
-  Name
-
-  Phone
-
-  Service
-
-  Date
-
-  Time
-
-  Status
-
-  Edit
-
-  Delete
-  -->
+          <p class="empty-state">
+            No bookings yet. Add your first booking above.
+          </p>
+          <!--  Booking Card Structure
+              Name
+              Phone
+              Service
+              Date
+              Time
+              Status
+              Edit
+              Delete
+            -->
         </div>
       </section>
     </main>
