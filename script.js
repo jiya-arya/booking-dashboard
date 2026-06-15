@@ -13,20 +13,75 @@ const bookingList = document.getElementById("booking-list");
 
 const searchInput = document.getElementById("search");
 
-const submitButton =
-  bookingForm.querySelector("button");
+const submitButton = bookingForm.querySelector("button");
 
-const totalBookingsElement =
-  document.getElementById("total-bookings");
+const totalBookingsElement = document.getElementById("total-bookings");
 
-const upcomingBookingsElement =
-  document.getElementById("upcoming-bookings");
+const upcomingBookingsElement = document.getElementById("upcoming-bookings");
 
-const completedBookingsElement =
-  document.getElementById("completed-bookings");
+const completedBookingsElement = document.getElementById("completed-bookings");
 
-const cancelledBookingsElement =
-  document.getElementById("cancelled-bookings");
+const cancelledBookingsElement = document.getElementById("cancelled-bookings");
+
+//form validation
+function validateForm() {
+  if (nameInput.value.trim().length < 2) {
+    alert(
+      "Customer name must be at least 2 characters."
+    );
+
+    return false;
+  }
+
+  const phoneRegex = /^\d{10}$/;
+
+  if (
+    !phoneRegex.test(
+      phoneInput.value.trim()
+    )
+  ) {
+    alert(
+      "Please enter a valid 10-digit phone number."
+    );
+
+    return false;
+  }
+
+  if (
+    serviceInput.value.trim().length < 3
+  ) {
+    alert(
+      "Service must be at least 3 characters."
+    );
+
+    return false;
+  }
+
+  const selectedDate =
+    new Date(dateInput.value);
+
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+  if (selectedDate < today) {
+    alert(
+      "Booking date cannot be in the past."
+    );
+
+    return false;
+  }
+
+  if (!timeInput.value) {
+    alert(
+      "Please select a booking time."
+    );
+
+    return false;
+  }
+
+  return true;
+}
 
 //array to store bookings
 let bookings = [];
@@ -38,6 +93,10 @@ bookingForm.addEventListener(
   "submit",
   function (event) {
     event.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
 
     const booking = {
       id: Date.now(),
@@ -119,33 +178,30 @@ function renderBookings(
         >
           <option
             value="upcoming"
-            ${
-              booking.status === "upcoming"
-                ? "selected"
-                : ""
-            }
+            ${booking.status === "upcoming"
+        ? "selected"
+        : ""
+      }
           >
             Upcoming
           </option>
 
           <option
             value="completed"
-            ${
-              booking.status === "completed"
-                ? "selected"
-                : ""
-            }
+            ${booking.status === "completed"
+        ? "selected"
+        : ""
+      }
           >
             Completed
           </option>
 
           <option
             value="cancelled"
-            ${
-              booking.status === "cancelled"
-                ? "selected"
-                : ""
-            }
+            ${booking.status === "cancelled"
+        ? "selected"
+        : ""
+      }
           >
             Cancelled
           </option>
