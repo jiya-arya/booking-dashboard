@@ -1,6 +1,6 @@
 console.log("script.js loaded");
 
-// dom elements
+//dom elements
 const bookingForm = document.getElementById("booking-form");
 
 const nameInput = document.getElementById("name");
@@ -13,79 +13,23 @@ const bookingList = document.getElementById("booking-list");
 
 const searchInput = document.getElementById("search");
 
-const submitButton = bookingForm.querySelector("button");
+const submitButton =
+  bookingForm.querySelector("button");
 
-const totalBookingsElement = document.getElementById("total-bookings");
+const totalBookingsElement =
+  document.getElementById("total-bookings");
 
-const upcomingBookingsElement = document.getElementById("upcoming-bookings");
+const upcomingBookingsElement =
+  document.getElementById("upcoming-bookings");
 
-const completedBookingsElement = document.getElementById("completed-bookings");
+const completedBookingsElement =
+  document.getElementById("completed-bookings");
 
-const cancelledBookingsElement = document.getElementById("cancelled-bookings");
+const cancelledBookingsElement =
+  document.getElementById("cancelled-bookings");
 
-//form validation
-function validateForm() {
-  if (nameInput.value.trim().length < 2) {
-    alert(
-      "Customer name must be at least 2 characters."
-    );
-
-    return false;
-  }
-
-  const phoneRegex = /^\d{10}$/;
-
-  if (
-    !phoneRegex.test(
-      phoneInput.value.trim()
-    )
-  ) {
-    alert(
-      "Please enter a valid 10-digit phone number."
-    );
-
-    return false;
-  }
-
-  if (
-    serviceInput.value.trim().length < 3
-  ) {
-    alert(
-      "Service must be at least 3 characters."
-    );
-
-    return false;
-  }
-
-  const selectedDate =
-    new Date(dateInput.value);
-
-  const today = new Date();
-
-  today.setHours(0, 0, 0, 0);
-
-  if (selectedDate < today) {
-    alert(
-      "Booking date cannot be in the past."
-    );
-
-    return false;
-  }
-
-  if (!timeInput.value) {
-    alert(
-      "Please select a booking time."
-    );
-
-    return false;
-  }
-
-  return true;
-}
-
-//array to store bookings
+// array to hold bookings
 let bookings = [];
-
 let editBookingId = null;
 
 //form submission
@@ -100,20 +44,20 @@ bookingForm.addEventListener(
 
     const booking = {
       id: Date.now(),
-      name: nameInput.value,
-      phone: phoneInput.value,
-      service: serviceInput.value,
+      name: nameInput.value.trim(),
+      phone: phoneInput.value.trim(),
+      service: serviceInput.value.trim(),
       date: dateInput.value,
       time: timeInput.value,
       status: "upcoming",
     };
 
-    // Add New Booking
+    // Create Booking
     if (editBookingId === null) {
       bookings.push(booking);
     }
 
-    // Update Existing Booking
+    // Update Booking
     else {
       bookings = bookings.map((item) => {
         if (item.id === editBookingId) {
@@ -146,7 +90,6 @@ function renderBookings(
 ) {
   bookingList.innerHTML = "";
 
-  // Empty State
   if (bookingsToRender.length === 0) {
     bookingList.innerHTML = `
       <p class="empty-state">
@@ -157,81 +100,97 @@ function renderBookings(
     return;
   }
 
-  // Render Cards
   bookingsToRender.forEach((booking) => {
-    const bookingCard = `
-      <div class="booking-card">
-
-        <h3>${booking.name}</h3>
-
-        <p>${booking.phone}</p>
-
-        <p>${booking.service}</p>
-
-        <p>${booking.date}</p>
-
-        <p>${booking.time}</p>
-
-        <select
-          class="status-select"
-          data-id="${booking.id}"
-        >
-          <option
-            value="upcoming"
-            ${booking.status === "upcoming"
-        ? "selected"
-        : ""
-      }
-          >
-            Upcoming
-          </option>
-
-          <option
-            value="completed"
-            ${booking.status === "completed"
-        ? "selected"
-        : ""
-      }
-          >
-            Completed
-          </option>
-
-          <option
-            value="cancelled"
-            ${booking.status === "cancelled"
-        ? "selected"
-        : ""
-      }
-          >
-            Cancelled
-          </option>
-        </select>
-
-        <div class="card-actions">
-
-          <button
-            class="edit-btn"
-            data-id="${booking.id}"
-          >
-            Edit
-          </button>
-
-          <button
-            class="delete-btn"
-            data-id="${booking.id}"
-          >
-            Delete
-          </button>
-
-        </div>
-
-      </div>
-    `;
-
-    bookingList.innerHTML += bookingCard;
+    bookingList.innerHTML +=
+      createBookingCard(booking);
   });
 
-  // Delete Buttons
+  attachDeleteEvents();
+  attachEditEvents();
+  attachStatusEvents();
+}
+
+//create booking card
+function createBookingCard(booking) {
+  return `
+    <div class="booking-card">
+
+      <h3>${booking.name}</h3>
+
+      <p>${booking.phone}</p>
+
+      <p>${booking.service}</p>
+
+      <p>${formatDate(
+        booking.date
+      )}</p>
+
+      <p>${formatTime(
+        booking.time
+      )}</p>
+
+      <select
+        class="status-select status-${booking.status}"
+        data-id="${booking.id}"
+      >
+        <option
+          value="upcoming"
+          ${
+            booking.status === "upcoming"
+              ? "selected"
+              : ""
+          }
+        >
+          Upcoming
+        </option>
+
+        <option
+          value="completed"
+          ${
+            booking.status === "completed"
+              ? "selected"
+              : ""
+          }
+        >
+          Completed
+        </option>
+
+        <option
+          value="cancelled"
+          ${
+            booking.status === "cancelled"
+              ? "selected"
+              : ""
+          }
+        >
+          Cancelled
+        </option>
+      </select>
+
+      <div class="card-actions">
+
+        <button
+          class="edit-btn"
+          data-id="${booking.id}"
+        >
+          Edit
+        </button>
+
+        <button
+          class="delete-btn"
+          data-id="${booking.id}"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+//attach events to dynamically created buttons
+function attachDeleteEvents() {
   const deleteButtons =
     document.querySelectorAll(".delete-btn");
 
@@ -247,8 +206,9 @@ function renderBookings(
       }
     );
   });
+}
 
-  // Edit Buttons
+function attachEditEvents() {
   const editButtons =
     document.querySelectorAll(".edit-btn");
 
@@ -264,8 +224,9 @@ function renderBookings(
       }
     );
   });
+}
 
-  // Status Dropdowns
+function attachStatusEvents() {
   const statusSelects =
     document.querySelectorAll(
       ".status-select"
@@ -291,8 +252,16 @@ function renderBookings(
   });
 }
 
-//delete booking status
+//delete booking
 function deleteBooking(id) {
+  const shouldDelete = confirm(
+    "Are you sure you want to delete this booking?"
+  );
+
+  if (!shouldDelete) {
+    return;
+  }
+
   bookings = bookings.filter(
     (booking) => booking.id !== id
   );
@@ -302,11 +271,13 @@ function deleteBooking(id) {
   saveBookings();
 }
 
-// edit booking status
+//edit booking
 function editBooking(id) {
   const booking = bookings.find(
     (booking) => booking.id === id
   );
+
+  if (!booking) return;
 
   nameInput.value = booking.name;
   phoneInput.value = booking.phone;
@@ -396,13 +367,97 @@ searchInput.addEventListener(
   }
 );
 
-// Initial Render - meaning when the page loads, we want to render the bookings and update the statistics
-loadBookings();
-renderBookings();
-updateStatistics();
+//form validation
+function validateForm() {
+  if (
+    nameInput.value.trim().length < 2
+  ) {
+    alert(
+      "Customer name must be at least 2 characters."
+    );
+    return false;
+  }
 
-// Save bookings to localStorage
-// jason.stringify(bookings) converts the bookings array into a JSON string so that it can be stored in localStorage.
+  const phoneRegex = /^\d{10}$/;
+
+  if (
+    !phoneRegex.test(
+      phoneInput.value.trim()
+    )
+  ) {
+    alert(
+      "Please enter a valid 10-digit phone number."
+    );
+    return false;
+  }
+
+  if (
+    serviceInput.value.trim().length < 3
+  ) {
+    alert(
+      "Service must be at least 3 characters."
+    );
+    return false;
+  }
+
+  const selectedDate =
+    new Date(dateInput.value);
+
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+  if (selectedDate < today) {
+    alert(
+      "Booking date cannot be in the past."
+    );
+    return false;
+  }
+
+  if (!timeInput.value) {
+    alert(
+      "Please select a booking time."
+    );
+    return false;
+  }
+
+  return true;
+}
+
+//date formatter
+function formatDate(dateString) {
+  const date = new Date(dateString);
+
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  );
+}
+
+//time formatter
+function formatTime(timeString) {
+  const [hours, minutes] =
+    timeString.split(":");
+
+  const date = new Date();
+
+  date.setHours(hours);
+  date.setMinutes(minutes);
+
+  return date.toLocaleTimeString(
+    "en-IN",
+    {
+      hour: "numeric",
+      minute: "2-digit",
+    }
+  );
+}
+
+//local storage functions
 function saveBookings() {
   localStorage.setItem(
     "bookings",
@@ -410,7 +465,6 @@ function saveBookings() {
   );
 }
 
-// Load bookings from localStorage
 function loadBookings() {
   const savedBookings =
     localStorage.getItem(
@@ -422,3 +476,8 @@ function loadBookings() {
       JSON.parse(savedBookings);
   }
 }
+
+// initial load
+loadBookings();
+renderBookings();
+updateStatistics();
