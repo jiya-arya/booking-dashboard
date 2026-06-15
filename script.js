@@ -77,6 +77,7 @@ bookingForm.addEventListener(
 
     renderBookings();
     updateStatistics();
+    saveBookings();
   }
 );
 
@@ -242,6 +243,7 @@ function deleteBooking(id) {
 
   renderBookings();
   updateStatistics();
+  saveBookings();
 }
 
 // edit booking status
@@ -281,6 +283,7 @@ function updateBookingStatus(
 
   renderBookings();
   updateStatistics();
+  saveBookings();
 }
 
 //statistics
@@ -338,5 +341,28 @@ searchInput.addEventListener(
 );
 
 // Initial Render - meaning when the page loads, we want to render the bookings and update the statistics
+loadBookings();
 renderBookings();
 updateStatistics();
+
+// Save bookings to localStorage
+// jason.stringify(bookings) converts the bookings array into a JSON string so that it can be stored in localStorage.
+function saveBookings() {
+  localStorage.setItem(
+    "bookings",
+    JSON.stringify(bookings)
+  );
+}
+
+// Load bookings from localStorage
+function loadBookings() {
+  const savedBookings =
+    localStorage.getItem(
+      "bookings"
+    );
+
+  if (savedBookings) {
+    bookings =
+      JSON.parse(savedBookings);
+  }
+}
