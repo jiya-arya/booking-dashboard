@@ -13,6 +13,14 @@ const bookingList = document.getElementById("booking-list");
 
 const submitButton = bookingForm.querySelector("button");
 
+const totalBookingsElement = document.getElementById("total-bookings");
+
+const upcomingBookingsElement = document.getElementById("upcoming-bookings");
+
+const completedBookingsElement = document.getElementById("completed-bookings");
+
+const cancelledBookingsElement = document.getElementById("cancelled-bookings");
+
 // Application State
 let bookings = [];
 
@@ -64,6 +72,7 @@ bookingForm.addEventListener("submit", function (event) {
 
   // Update UI
   renderBookings();
+  updateStatistics();
 });
 
 // Render Bookings
@@ -167,4 +176,26 @@ function editBooking(id) {
   // Change button text of form to indicate update mode
   submitButton.textContent = "Update Booking";
 
+}
+
+// Update Statistics
+function updateStatistics() {
+  const totalBookings = bookings.length;
+
+  const upcomingBookings = bookings.filter(
+    (booking) => booking.status === "upcoming"
+  ).length;
+
+  const completedBookings = bookings.filter(
+    (booking) => booking.status === "completed"
+  ).length;
+
+  const cancelledBookings = bookings.filter(
+    (booking) => booking.status === "cancelled"
+  ).length;
+
+  totalBookingsElement.textContent = totalBookings;
+  upcomingBookingsElement.textContent = upcomingBookings;
+  completedBookingsElement.textContent = completedBookings;
+  cancelledBookingsElement.textContent = cancelledBookings;
 }
